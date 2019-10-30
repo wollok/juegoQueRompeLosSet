@@ -10,9 +10,8 @@ object nivelCajas {
 		self.cargarFondo() 		// fondo - es importante que sea el primer visual que se agregue			 
 		self.cargarCajas() 		// otros visuals, p.ej. bloques o llaves
 		self.cargarFinal()
-		self.cargarPnj() 		// personaje, es importante que sea el último visual que se agregue
-		self.cargarFinal()	
-		self.cargarColisiones()
+		self.cargarPnj() 		// personaje, es importante que sea el último visual que se agregue	
+		//self.cargarColisiones()
 		self.configurarTeclas()
 	}
 	
@@ -35,6 +34,8 @@ object nivelCajas {
 		keyboard.down().onPressDo({tony1.moverseAbajo()})		
 		keyboard.right().onPressDo({tony1.moverseDerecha()})		
 		keyboard.left().onPressDo({tony1.moverseIzquierda()})
+		keyboard.a().onPressDo({tony1.agarrar()})
+		keyboard.s().onPressDo({tony1.soltar()})
 		keyboard.n().onPressDo({self.terminar()})
 	}
 	
@@ -51,10 +52,10 @@ object nivelCajas {
 	}
 	
 	method cargarFinal() {
-		game.addVisual(salidaNvl1)
+		tony1.salirDelNivel()
 	}
 	
 	method cargarColisiones() {
-		game.whenCollideDo(tony1,{c => c.movete()})
+		game.whenCollideDo(tony1,{c => c.seMueve()})
 	}	
 }
