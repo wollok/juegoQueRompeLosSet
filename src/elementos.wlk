@@ -3,16 +3,10 @@ import personajes.*
 import direcciones.*
 
 class Caja {	
-var property position = game.at(0.randomUpTo(game.width()-1).truncate(0),
-								0.randomUpTo(game.height()-1).truncate(0))					
+var property position = game.at(1.randomUpTo(game.width()-2).truncate(0),
+								1.randomUpTo(game.height()-2).truncate(0))					
 const property image = "caja.png"
-const property deposito 
-/* 
-const property esBordeArriba = self.position().y() == game.height()-1
-const property esBordeAbajo = self.position().y() == 0
-const property esBordeIzquierdo = self.position().x() == 0
-const property esBordeDerecho = self.position().x() == game.width()-1
-*/ 		
+const property deposito 	
  	
  	method seMueve(direccion) {
 		self.validarUnaPosicionVacia(direccion) 	

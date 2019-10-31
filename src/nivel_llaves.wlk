@@ -8,8 +8,8 @@ object nivelLlaves {
 		self.cargarFondo()
 		self.cargarPollos()
 		self.cargarLlaves()
-		self.cargarColisiones()
 		self.cargarPnj()		 
+		self.cargarColisiones()
 		self.configurarTeclas()
 	}
 	method ganar() {															// es muy parecido al terminar() de nivelBloques, el perder() también va a ser parecido

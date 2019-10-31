@@ -7,14 +7,12 @@ var property position = game.at(7, 9)
 const property image = "player.png"
 const property cajasEnDepo = #{}
 var direccion = arriba
-var ubicacion  
-var caja 
+//var ubicacion  
 
 	method empujar(elemento) {
-		caja = elemento
 		try {
 			elemento.seMueve(direccion)
-			ubicacion = elemento.position()
+			self.cajasEnElDeposito(elemento)
 		} catch e {
 			console.println(e)
 			self.retroceder()
@@ -50,15 +48,18 @@ var caja
 	method moverse() {
 		position = direccion.siguiente(position)
 	}
-	method cajasEnElDeposito() {
-		if (ubicacion.x().between(5,9) and ubicacion.y().between(7,12)) 
-			cajasEnDepo.add(caja)			
+	method cajasEnElDeposito(caja) {
+		if (caja.position().x().between(5,9) and caja.position().y().between(7,12)) { 
+			cajasEnDepo.add(caja)
+		} else {
+			cajasEnDepo.remove(caja)	// Esto contempla el caso en el que una caja que no tiene Position se agrega a cajasEnDepo
+		}		
 	}
 	method cargarLaSalida() {
-		if (cajasEnDepo.size() == 5) 
+		if (cajasEnDepo.size() >= 5)	// Esto también contempla el mismo caso, ya que en teoria hay 5 cajas en tablero, pero a veces al moverlas se añade una caja sin Position		 
 			game.addVisual(salidaNvl1)	
 	}
-}	
+}										//ubicacion != null and
 /*
 var property position = game.at(7,9)
 const property image = "player.png"

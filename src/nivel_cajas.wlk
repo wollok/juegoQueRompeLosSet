@@ -8,23 +8,25 @@ object nivelCajas {
 	method configurate() {
 		self.cargarFondo() 															// fondo - es importante que sea el primer visual que se agregue			 
 		self.cargarCajas() 															// otros visuals, p.ej. bloques o llaves
-		game.onTick(2000,"revisarSalida",{=>self.contarCajas()})
+		//game.onTick(1000,"revisarSalida",{=>self.contarCajas()})
 		self.cargarPnj() 															// personaje, es importante que sea el último visual que se agregue	
 		self.cargarColisiones()
 		self.configurarTeclas()
 	}
 	method terminar() {
-		game.clear()																// limpia visuals, teclado, colisiones y acciones
-		game.addVisual(new Fondo(image="fondoCompleto.png"))						// después puedo volver a agregar el fondo, y algún visual para que no quede tan pelado
-		game.addVisual(tony1)
-		game.schedule(2000,{														// después de un ratito ...
-			game.clear()
-			game.addVisual(new Fondo(image="finNivel1.png")) 						// cambio de fondo
-			game.schedule(2000,{													// después de un ratito ...		
-				game.clear()														// ... limpio todo de nuevo
-				nivelLlaves.configurate()											// y arranco el siguiente nivel
-			})
-		})
+		if(tony1.cajasEnDepo().size() >= 5) {
+			game.clear()																// limpia visuals, teclado, colisiones y acciones
+			game.addVisual(new Fondo(image="fondoCompleto.png"))						// después puedo volver a agregar el fondo, y algún visual para que no quede tan pelado
+			game.addVisual(tony1)
+			game.schedule(2000,{														// después de un ratito ...
+				game.clear()
+				game.addVisual(new Fondo(image="finNivel1.png")) 						// cambio de fondo
+				game.schedule(2000,{													// después de un ratito ...		
+					game.clear()														// ... limpio todo de nuevo
+					nivelLlaves.configurate()											// y arranco el siguiente nivel
+				})
+			})			
+		}
 	}
 	method configurarTeclas() {	
 		keyboard.up().onPressDo{tony1.moverseArriba()}
@@ -43,13 +45,15 @@ object nivelCajas {
 	method cargarPnj() {
 		game.addVisual(tony1)
 	}
-	method contarCajas() {
-		tony1.cajasEnElDeposito()
-	}
-	/*method cargarFinal() {
+	//method contarCajas() {
+	//	tony1.cajasEnElDeposito()
+	//}
+	/* 
+	method cargarFinal() {
 		if (tony1.cajasEnDepo().size() == 5 and game.hasVisual(salidaNvl1)) 
 			keyboard.n().onPressDo{self.terminar()}
-	}*/
+	}
+	*/
 	method cargarColisiones() {
 		game.whenCollideDo(tony1,{c => tony1.empujar(c)})
 	}
