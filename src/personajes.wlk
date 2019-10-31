@@ -5,53 +5,68 @@ import direcciones.*
 object tony1 {
 var property position = game.at(7, 9)
 const property image = "player.png"
+const property cajasEnDepo = #{}
 var direccion = arriba
+var ubicacion  
+var caja 
 
 	method empujar(elemento) {
-			try
-				elemento.movete(direccion)
-			catch e {
-				console.println(e)
-				self.retrocede()
-			}
+		caja = elemento
+		try {
+			elemento.seMueve(direccion)
+			ubicacion = elemento.position()
+		} catch e {
+			console.println(e)
+			self.retroceder()
+		}
 	}	
-	method retrocede() {
-		position = direccion.opuesto().siguiente(position)
+	method retroceder() {
+		position = direccion.opuesto().siguiente(position)	
 	}
-	method retrocedeCon(caja) {
-		self.retrocede()
-		caja.movete(direccion.opuesto())
+	method retrocederCon(c) {
+		self.retroceder()
+		c.movete(direccion.opuesto())
 	}
-	method irArriba() { 
+	method moverseArriba() { 
 		direccion = arriba
 		if (self.position().y() != game.height()-1) 
-			self.avanzar()
+			self.moverse()
 	}
-	method irAbajo() {
+	method moverseAbajo() {
 		direccion = abajo
 		if (self.position().y() != 0) 
-			self.avanzar()
+			self.moverse()
 	}
-	method irIzquierda() {
+	method moverseIzquierda() {
 		direccion = izquierda
 		if (self.position().x() != 0) 
-			self.avanzar()
+			self.moverse()
 	}
-	method irDerecha() {
+	method moverseDerecha() {
 		direccion = derecha
 		if (self.position().x() != game.width()-1) 
-			self.avanzar()
+			self.moverse()
 	}
-	method avanzar() {
+	method moverse() {
 		position = direccion.siguiente(position)
 	}
-/*var property position = game.at(7,9)
+	method cajasEnElDeposito() {
+		if (ubicacion.x().between(5,9) and ubicacion.y().between(7,12)) 
+			cajasEnDepo.add(caja)			
+	}
+	method cargarLaSalida() {
+		if (cajasEnDepo.size() == 5) 
+			game.addVisual(salidaNvl1)	
+	}
+}	
+/*
+var property position = game.at(7,9)
 const property image = "player.png"
 var caja = noCaja
 var ubicacion = self.position()
-const property cajasEnDepo = #{}*/
+const property cajasEnDepo = #{}
 
- 	/*method moverseArriba() {
+ 	method moverseArriba() {
 		if (self.position().y() != game.height()-1) {	
 			self.position(self.position().up(1))
 			if(caja.esCaja()) {
@@ -110,12 +125,16 @@ const property cajasEnDepo = #{}*/
 		if (cajasEnDepo.size() >= 5) {
 			game.addVisual(salidaNvl1)
 		}		
-	}*/
+	}
 }
+*/
 
 object tony2 {
 var property position = game.at(7,9)
-const property image = "player.png"	
+const property image = "player.png"
+const property llaves = #{}	
+var direccion = arriba
+var llave 
 var energia = 40
 var pasos = 0
 
@@ -123,34 +142,46 @@ var pasos = 0
 		pasos++
 		if (pasos % 10 == 0) {energia = 0.max(energia--)}	
 	}
-	method comerPollo() {
-		energia += game.whenCollideDo(self, {p => p.esConsumido()})
+	method guardar(elemento) {
+		llave = elemento
+		try {
+			elemento.esAgarrada(direccion)
+		} then always {
+			llaves.add(llave)
+		}
 	}
- 	method moverseArriba() {
-		if (self.position().y() != game.height()-1) {	
-			self.position(self.position().up(1))
+	method comerPollo() {
+		energia += game.whenCollideDo(self,{p => p.esConsumido()})
+	}
+ 	method moverseArriba() { 
+		direccion = arriba
+		if (self.position().y() != game.height()-1) 
+			self.moverse()
 			self.contarPasos()
-		} 
 	}
 	method moverseAbajo() {
-		if (self.position().y() != 0) {
-			self.position(self.position().down(1))
+		direccion = abajo
+		if (self.position().y() != 0) 
+			self.moverse()
 			self.contarPasos()
-		}
-	}
-	method moverseDerecha() {
-		if (self.position().x() != game.width()-1) {
-			self.position(self.position().right(1))
-			self.contarPasos()
-		}
 	}
 	method moverseIzquierda() {
-		if (self.position().x() != 0) {
-			self.position(self.position().left(1))
+		direccion = izquierda
+		if (self.position().x() != 0) 
+			self.moverse()
 			self.contarPasos()
-		}
+	}
+	method moverseDerecha() {
+		direccion = derecha
+		if (self.position().x() != game.width()-1) 
+			self.moverse()
+			self.contarPasos()
+	}
+	method moverse() {
+		position = direccion.siguiente(position)
 	}
 	method decirEnergia() {
-		game.say(self,"Energia:"+energia)
+		game.say(self,"Energía:"+energia)
 	}
+	method esLlave() = false
 }
