@@ -1,25 +1,17 @@
 import wollok.game.*
 import fondo.*
 import personajes.*
+import elementos.*
 
-object nivelLlaves {
-
+object nivelLlaves {			// colisiones, acá sí hacen falta
 	method configurate() {
-		// fondo - es importante que sea el primer visual que se agregue
-		game.addVisual(new Fondo(image="fondoCompleto.png"))
-				 
-		// otros visuals, p.ej. bloques o llaves
-			
-		// personaje, es importante que sea el último visual que se agregue
-		game.addVisual(tony1)
+		self.cargarFondo()
+		self.cargarPollos()
+		self.cargarLlaves()
 		
-		// teclado
-		// este es para probar, no es necesario dejarlo
-		keyboard.g().onPressDo({ self.ganar() })
-
-		// colisiones, acá sí hacen falta
+		self.cargarPnj()		 
+		self.configurarTeclas()
 	}
-	
 	method ganar() {
 		// es muy parecido al terminar() de nivelBloques
 		// el perder() también va a ser parecido
@@ -40,6 +32,23 @@ object nivelLlaves {
 			})
 		})
 	}
-	
-	
+	method configurarTeclas() {	
+		keyboard.up().onPressDo({tony2.moverseArriba()})			
+		keyboard.down().onPressDo({tony2.moverseAbajo()})		
+		keyboard.right().onPressDo({tony2.moverseDerecha()})		
+		keyboard.left().onPressDo({tony2.moverseIzquierda()})
+		keyboard.space().onPressDo({tony2.decirEnergia()})		
+	}
+	method cargarLlaves() {
+		(0 .. 2.randomUpTo(3).truncate(0)).forEach{l => game.addVisual(new Llave())}
+	}
+	method cargarPollos() {
+		(0 .. 1.randomUpTo(6).truncate(0)).forEach{p => game.addVisual(new Pollo())}
+	}
+	method cargarFondo() {
+		game.addVisual(new Fondo(image="fondoCompleto.png"))
+	}
+	method cargarPnj() {
+		game.addVisual(tony2)
+	}	
 }
