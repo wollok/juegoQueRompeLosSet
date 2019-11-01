@@ -20,10 +20,6 @@ var direccion = arriba
 	method retroceder() {
 		position = direccion.opuesto().siguiente(position)	
 	}
-	method retrocederCon(c) {
-		self.retroceder()
-		c.movete(direccion.opuesto())
-	}
 	method moverseArriba() { 
 		direccion = arriba
 		if (self.position().y() != game.height()-1) 
@@ -51,12 +47,12 @@ var direccion = arriba
 		if (caja.position().x().between(5,9) and caja.position().y().between(7,12)) { 
 			cajasEnDepo.add(caja)
 		} else {
-			cajasEnDepo.remove(caja)	// Esto contempla el caso en el que una caja que no tiene Position se agrega a cajasEnDepo
+			cajasEnDepo.remove(caja)	// Esto contempla el caso en el que una caja que no posee Position se agrega a cajasEnDepo
 		}		
 	}
 	method cargarLaSalida() {
-		if (cajasEnDepo.size() >= 5)	// Esto también contempla el mismo caso, ya que en teoria hay 5 cajas en tablero, pero a veces al moverlas se añade una caja sin Position		 
-			game.addVisual(salidaNvl1)	
+		if (cajasEnDepo.size() >= 5)	// Esto también contempla el mismo caso, ya que en teoria hay 5 cajas en tablero, 		 
+			game.addVisual(salidaNvl1)	// pero a veces al moverlas se añade una caja que no posee Position y cajasEnDepo la añade erroneamente.
 	}
 }
 
@@ -66,12 +62,12 @@ const property image = "player.png"
 const property llaves = #{}	
 var direccion = arriba
 var llave 
-var energia = 4
+var energia = 40
 var pasos = 0
 
  	method contarPasos() {
 		pasos++
-		if (pasos % 10 == 0) {energia = 0.max(energia-1)}	
+		energia = 0.max(energia-1)
 	}
 	method guardar(elemento) {
 		llave = elemento
@@ -89,6 +85,7 @@ var pasos = 0
 		} then always {
 			if(pollo.esPollo())
 			energia += pollo.esConsumido()
+			game.addVisual(new Pollo())
 		}
 		
 	}
@@ -126,8 +123,5 @@ var pasos = 0
 	}
 	method moverse() {
 		position = direccion.siguiente(position)
-	}
-	method decirEnergia() {
-		game.say(self,"Energía:"  +  energia)
 	}
 }

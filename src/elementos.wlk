@@ -2,12 +2,12 @@ import wollok.game.*
 import personajes.*
 import direcciones.*
 import nivel_llaves.*
+import nivel_cajas.*
 
 class Caja {	
 var property position = game.at(1.randomUpTo(game.width()-1).truncate(0),
 								1.randomUpTo(game.height()-1).truncate(0))					
-const property image = "caja.png"
-const property deposito 	
+const property image = "caja.png"	
  	
  	method seMueve(direccion) {
 		self.validarUnaPosicionVacia(direccion) 	
@@ -16,12 +16,12 @@ const property deposito
 	method validarUnaPosicionVacia(direccion) {
 		const posicionAdyacente = direccion.siguiente(position) 
 		
-		var posicionVacia = game.getObjectsIn(posicionAdyacente).all{o => o.puedePisarte(self)} 
+		var posicionVacia = game.getObjectsIn(posicionAdyacente)
+			.all{o => o.puedePisarte(self)} 
 		
 		if (!posicionVacia) 
 			throw new Exception(message = "Algo esta trabando la caja.") 
-	}
-	method estaBienPosicionada() = deposito.map{l => l.position()}.contains(self.position()) 	
+	}	
 	method puedePisarte(_) = false
 	method esCaja() = true
 }
@@ -59,7 +59,7 @@ class Pollo {
 var property position = game.at(1.randomUpTo(game.width()-1).truncate(0),
 								1.randomUpTo(game.height()-1).truncate(0))
 const property image = "pollo.jpg"
-var property energiaXPollo = 10.randomUpTo(50).truncate(0)
+var property energiaXPollo = 10.randomUpTo(40).truncate(0)
 	
 	method esConsumido() = energiaXPollo
 	method terminarJuego() {}

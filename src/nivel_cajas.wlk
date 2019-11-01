@@ -8,12 +8,16 @@ object nivelCajas {
 	method configurate() {
 		self.cargarFondo() 																	 
 		self.cargarCajas()
+		game.onTick(2000,"generarSalida",{=>self.cargarSalida()})
 		self.cargarPnj()
 		self.cargarColisiones() 																														
 		self.configurarTeclas()
 	}
 	method terminarSiCorresponde() {
-		if(tony1.cajasEnDepo().size() >= 5) {
+		if (tony1.cajasEnDepo().size() >= 5 and 
+			tony1.position().x() == 9 and 
+			tony1.position().y() == 12) {
+			
 			game.clear()																
 			game.addVisual(new Fondo(image="fondoCompleto.png"))						
 			game.addVisual(tony1)
@@ -24,7 +28,8 @@ object nivelCajas {
 					game.clear()														
 					nivelLlaves.configurate()											
 				})
-			})			
+			})
+						
 		}
 	}
 	method configurarTeclas() {	
@@ -32,7 +37,6 @@ object nivelCajas {
 		keyboard.down().onPressDo{tony1.moverseAbajo()}
 		keyboard.left().onPressDo{tony1.moverseIzquierda()}
 		keyboard.right().onPressDo{tony1.moverseDerecha()}
-		keyboard.q().onPressDo{tony1.cargarLaSalida()}
 		keyboard.n().onPressDo{self.terminarSiCorresponde()}
 	}
 	method cargarCajas() {
@@ -46,5 +50,9 @@ object nivelCajas {
 	}
 	method cargarColisiones() {
 		game.whenCollideDo(tony1,{c => tony1.empujar(c)})
+	}
+	method cargarSalida() {
+		if(tony1.cajasEnDepo().size() >= 5 and not game.hasVisual(salidaNvl1))
+			game.addVisual(salidaNvl1)
 	}
 }

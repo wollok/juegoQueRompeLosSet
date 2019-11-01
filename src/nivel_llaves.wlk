@@ -43,13 +43,13 @@ object nivelLlaves {
 		keyboard.down().onPressDo({tony2.moverseAbajo()})		
 		keyboard.right().onPressDo({tony2.moverseDerecha()})		
 		keyboard.left().onPressDo({tony2.moverseIzquierda()})
-		keyboard.a().onPressDo({tony2.decirEnergia()})		
+		keyboard.q().onPressDo({self.mostrarEnergia()})		
 	}
 	method cargarLlaves() {
 		(0 .. 2.randomUpTo(3).truncate(0)).forEach{l => game.addVisual(new Llave())}
 	}
 	method cargarPollos() {
-		(0 .. 1.randomUpTo(10).truncate(0)).forEach{p => game.addVisual(new Pollo())}
+		game.addVisual(new Pollo())
 	}
 	method cargarFondo() {
 		game.addVisual(new Fondo(image="fondoCompleto.png"))
@@ -65,5 +65,10 @@ object nivelLlaves {
 	method cargarSalida() {
 		if(tony2.llaves().size() >= 3 and not game.hasVisual(salidaNvl2)) 
 			game.addVisual(salidaNvl2)
+	}
+	method mostrarEnergia() {
+		var indicador = new Fondo(position=game.at(15,15),image="fondoCompleto.png")
+		game.addVisual(indicador)
+		game.say(indicador,"Energía"+tony2.energia())
 	}	
 }
