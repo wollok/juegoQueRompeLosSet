@@ -4,8 +4,8 @@ import direcciones.*
 import nivel_llaves.*
 
 class Caja {	
-var property position = game.at(1.randomUpTo(game.width()-2).truncate(0),
-								1.randomUpTo(game.height()-2).truncate(0))					
+var property position = game.at(1.randomUpTo(game.width()-1).truncate(0),
+								1.randomUpTo(game.height()-1).truncate(0))					
 const property image = "caja.png"
 const property deposito 	
  	
@@ -46,28 +46,34 @@ var property position = game.at(1.randomUpTo(game.width()-1).truncate(0),
 								1.randomUpTo(game.height()-1).truncate(0))
 const property image = "llave.png"
 
-	method esAgarrada() {
-		//if(self.esLlave())
-			game.removeVisual(self) 
+	method esAgarrada(llave) {
+		if(llave.esLlave())
+			game.removeVisual(llave) 
 	}
-	method esLlave() = true								
+	method esLlave() = true
+	method esPollo() = false
+	method terminarJuego() {}								
 }
 
 class Pollo {
-var property position = game.at(0.randomUpTo(game.width()-1).truncate(0),
-								0.randomUpTo(game.height()-1).truncate(0))
+var property position = game.at(1.randomUpTo(game.width()-1).truncate(0),
+								1.randomUpTo(game.height()-1).truncate(0))
 const property image = "pollo.jpg"
-var property energiaXPollo = 10.randomUpTo(100).truncate(0)
+var property energiaXPollo = 10.randomUpTo(50).truncate(0)
 	
 	method esConsumido() = energiaXPollo
-	method esAgarrada() {}
+	method terminarJuego() {}
+	method esAgarrada(llave) {}
+	method esPollo() = true
 	method esLlave() = false 									
 }
 
 object noLlave {
 var property position = tony2.position()
 
-	method esAgarrada() {}
+	method terminarJuego() {}
+	method esAgarrada(llave) {}
+	method esPollo() = false
 	method esLlave() = false	
 }
 
@@ -76,6 +82,7 @@ var property position = game.at(9,12)
 const property image = "salida.jpg"
 	
 	method terminarJuego() {nivelLlaves.ganar()}
-	method esAgarrada() {}
+	method esAgarrada(llave) {}
+	method esPollo() = false
 	method esLlave() = false	
 }

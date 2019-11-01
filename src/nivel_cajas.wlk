@@ -13,7 +13,7 @@ object nivelCajas {
 		self.configurarTeclas()
 	}
 	method terminarSiCorresponde() {
-		//if(tony1.cajasEnDepo().size() >= 5) {
+		if(tony1.cajasEnDepo().size() >= 5) {
 			game.clear()																
 			game.addVisual(new Fondo(image="fondoCompleto.png"))						
 			game.addVisual(tony1)
@@ -25,7 +25,7 @@ object nivelCajas {
 					nivelLlaves.configurate()											
 				})
 			})			
-		//}
+		}
 	}
 	method configurarTeclas() {	
 		keyboard.up().onPressDo{tony1.moverseArriba()}

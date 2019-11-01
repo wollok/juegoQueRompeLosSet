@@ -9,22 +9,19 @@ object nivelLlaves {
 		self.cargarPollos()
 		self.cargarLlaves()
 		game.onTick(2000,"generarSalida",{=>self.cargarSalida()})
-		self.perderSiCorresponde()
-		self.cargarPnj()		 
+		self.cargarPnj()
+		game.onTick(2000,"perderJuego",{=>self.perderSiCorresponde()})		 
 		self.cargarColisiones()
 		self.configurarTeclas()		
 	}
-	method ganarSiCorresponde() {
-		game.whenCollideDo(tony2,{s => s.terminarJuego()})
-	}
-	method ganar() {															// es muy parecido al terminar() de nivelBloques, el perder() también va a ser parecido
-		game.clear()															// limpia visuals, teclado, colisiones y acciones
-		game.addVisual(new Fondo(image="fondoCompleto.png"))					// después puedo volver a agregar el fondo, y algún visual para que no quede tan pelado
-		game.schedule(2000,{													// después de un ratito ...
+	method ganar() {															
+		game.clear()															
+		game.addVisual(new Fondo(image="fondoCompleto.png"))					
+		game.schedule(2000,{													
 			game.clear()
-			game.addVisual(new Fondo(image="ganamos.png"))						// cambio de fondo
-			game.schedule(2000,{												// después de un ratito ...
-				game.stop()														// fin del juego
+			game.addVisual(new Fondo(image="ganamos.png"))						
+			game.schedule(2000,{												
+				game.stop()														
 			})
 		})
 	}
@@ -62,6 +59,8 @@ object nivelLlaves {
 	}
 	method cargarColisiones() {
 		game.whenCollideDo(tony2,{l => tony2.guardar(l)})
+		game.whenCollideDo(tony2,{s => tony2.ganarElJuego(s)})
+		game.whenCollideDo(tony2,{p => tony2.comer(p)})
 	}
 	method cargarSalida() {
 		if(tony2.llaves().size() >= 3 and not game.hasVisual(salidaNvl2)) 
