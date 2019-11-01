@@ -8,9 +8,14 @@ object nivelLlaves {
 		self.cargarFondo()
 		self.cargarPollos()
 		self.cargarLlaves()
+		game.onTick(2000,"generarSalida",{=>self.cargarSalida()})
+		self.perderSiCorresponde()
 		self.cargarPnj()		 
 		self.cargarColisiones()
-		self.configurarTeclas()
+		self.configurarTeclas()		
+	}
+	method ganarSiCorresponde() {
+		game.whenCollideDo(tony2,{s => s.terminarJuego()})
 	}
 	method ganar() {															// es muy parecido al terminar() de nivelBloques, el perder() también va a ser parecido
 		game.clear()															// limpia visuals, teclado, colisiones y acciones
@@ -23,16 +28,18 @@ object nivelLlaves {
 			})
 		})
 	}
-	method perder() {
-		game.clear()
-		game.addVisual(new Fondo(image="fondoBlanco.png"))
-		game.schedule(2000,{
+	method perderSiCorresponde() {
+		if(tony2.energia() == 0) {	
 			game.clear()
-			game.addVisual(new Fondo(image="perdiste.png"))
+			game.addVisual(new Fondo(image="fondoBlanco.png"))
 			game.schedule(2000,{
-				game.stop()
-			})	
-		})
+				game.clear()
+				game.addVisual(new Fondo(image="perdiste.png"))
+				game.schedule(2000,{
+					game.stop()
+				})	
+			})			
+		}
 	}
 	method configurarTeclas() {	
 		keyboard.up().onPressDo({tony2.moverseArriba()})			
@@ -55,5 +62,9 @@ object nivelLlaves {
 	}
 	method cargarColisiones() {
 		game.whenCollideDo(tony2,{l => tony2.guardar(l)})
+	}
+	method cargarSalida() {
+		if(tony2.llaves().size() >= 3 and not game.hasVisual(salidaNvl2)) 
+			game.addVisual(salidaNvl2)
 	}	
 }

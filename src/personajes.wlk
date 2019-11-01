@@ -136,17 +136,17 @@ const property image = "player.png"
 const property llaves = #{}	
 var direccion = arriba
 var llave 
-var energia = 40
+var energia = 4
 var pasos = 0
 
  	method contarPasos() {
 		pasos++
-		if (pasos % 10 == 0) {energia = 0.max(energia--)}	
+		if (pasos % 10 == 0) {energia = 0.max(energia-1)}	
 	}
 	method guardar(elemento) {
 		llave = elemento
 		try {
-			elemento.esAgarrada(direccion)
+			elemento.esAgarrada()
 		} then always {
 			llaves.add(llave)
 		}
@@ -154,6 +154,7 @@ var pasos = 0
 	method comerPollo() {
 		energia += game.whenCollideDo(self,{p => p.esConsumido()})
 	}
+	method energia() = energia
  	method moverseArriba() { 
 		direccion = arriba
 		if (self.position().y() != game.height()-1) 

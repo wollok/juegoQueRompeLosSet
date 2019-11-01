@@ -1,6 +1,7 @@
 import wollok.game.*
 import personajes.*
 import direcciones.*
+import nivel_llaves.*
 
 class Caja {	
 var property position = game.at(1.randomUpTo(game.width()-2).truncate(0),
@@ -41,13 +42,13 @@ const property image = "salida.jpg"
 }
 
 class Llave {
-var property position = game.at(0.randomUpTo(game.width()-1).truncate(0),
-								0.randomUpTo(game.height()-1).truncate(0))
+var property position = game.at(1.randomUpTo(game.width()-1).truncate(0),
+								1.randomUpTo(game.height()-1).truncate(0))
 const property image = "llave.png"
 
-	method esAgarrada(llave) {
-		if(self.esLlave())
-			game.removeVisual(llave) 
+	method esAgarrada() {
+		//if(self.esLlave())
+			game.removeVisual(self) 
 	}
 	method esLlave() = true								
 }
@@ -71,18 +72,10 @@ var property position = tony2.position()
 }
 
 object salidaNvl2 {
-var property position = game.at(8,10)
+var property position = game.at(9,12)
 const property image = "salida.jpg"
 	
+	method terminarJuego() {nivelLlaves.ganar()}
 	method esAgarrada() {}
 	method esLlave() = false	
 }
-/* 
-class Salida {
-var property position
-const property image = "salida.jpg"
-	
-	method seMueve(direccion) {}
-	method puedePisarte(_) = true
-}
-*/
