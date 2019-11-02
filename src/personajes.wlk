@@ -2,6 +2,10 @@ import wollok.game.*
 import elementos.*
 import direcciones.*
 
+object sombra {
+	method position() = tony1.position()
+}
+
 object tony1 {
 var property position = game.at(7, 9)
 const property image = "player.png"
@@ -45,9 +49,12 @@ var direccion = arriba
 	}
 	method cajasEnElDeposito(caja) {
 		if (caja.position().x().between(5,9) and caja.position().y().between(7,12)) { 
+			console.println(caja)
 			cajasEnDepo.add(caja)
 		} else {
-			cajasEnDepo.remove(caja)	// Esto contempla el caso en el que una caja que no posee Position se agrega a cajasEnDepo
+			console.println(caja)
+			console.println(cajasEnDepo.map{c => c.position()})
+//			cajasEnDepo.remove(caja)	// Esto contempla el caso en el que una caja que no posee Position se agrega a cajasEnDepo
 		}		
 	}
 	method cargarLaSalida() {

@@ -1,0 +1,27 @@
+import personajes.*
+import wollok.game.*
+import elementos.*
+
+
+program abc {
+	const dic = new Dictionary()
+	
+	dic.put(tony1, "TONY")
+	dic.put(sombra, "SOMBRA")
+	
+	game.addVisualCharacter(tony1)
+	game.addVisual(sombra)
+	const cajas = (0..30).map({n => new Caja()})
+	cajas.forEach({caja => 
+		game.addVisual(caja)
+		dic.put(caja, caja.identity().toString())
+	})
+	game.whenCollideDo(sombra, {personaje =>
+		console.println("--------------------------------------------------")
+		console.println(dic.get(sombra))		
+		console.println(dic.get(personaje))
+		console.println("--------------------------------------------------")
+	})
+	
+	game.start()
+}

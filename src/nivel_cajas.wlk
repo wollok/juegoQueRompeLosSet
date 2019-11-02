@@ -4,7 +4,8 @@ import personajes.*
 import elementos.*
 import nivel_llaves.*
 
-object nivelCajas {		
+object nivelCajas {
+	const cajas = #{}
 	method configurate() {
 		self.cargarFondo() 																	 
 		self.cargarCajas()
@@ -49,7 +50,16 @@ object nivelCajas {
 		game.addVisual(tony1)
 	}
 	method cargarColisiones() {
-		game.whenCollideDo(tony1,{c => tony1.empujar(c)})
+		game.whenCollideDo(tony1,{c => 
+			tony1.empujar(c)
+			cajas.add(c)
+			console.println("CAJAS TOCADAS:")
+			console.println(cajas)
+			console.println(cajas.size())
+			if (cajas.size() > 5) {
+				console.println(cajas.map{caja => [caja.position().x(), caja.position().y()]})
+			}
+		})
 	}
 	method cargarSalida() {
 		if(tony1.cajasEnDepo().size() >= 5 and not game.hasVisual(salidaNvl1))
